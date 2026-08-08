@@ -146,7 +146,7 @@ dotnet-tools.json                 Stryker.NET などのローカルツールの�
 | テストピラミッド | テストトロフィー |
 |---|---|
 | ![Test Pyramid](docs/images/test-pyramid.png) | ![Testing Trophy](docs/images/testing-trophy.jpg) |
-| [出典: Martin Fowler - TestPyramid](https://martinfowler.com/bliki/TestPyramid.html) | [出典: Kent C. Dodds - Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests) |
+| [出典: Ham Vocke - The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) | [出典: Kent C. Dodds - Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests) |
 
 どちらが正しいという話ではなく、**対象システムの特性によって最適なバランスは変わる**、という点が重要です。この教材(Level1〜4)は、まず基本となるユニットテスト(テストピラミッドの土台)の書き方を身につけることを目的としています。
 
