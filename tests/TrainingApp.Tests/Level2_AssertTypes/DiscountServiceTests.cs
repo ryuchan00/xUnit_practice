@@ -7,11 +7,15 @@ namespace TrainingApp.Tests.Level2_AssertTypes;
 // -------------------------------------------------------------------
 // xUnit には Assert.Equal 以外にも多くの検証メソッドがあります。
 // 場面に応じて適切な Assert メソッドを選んで穴埋めしてください。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level2_AssertTypes"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level2_AssertTypes"
 // ===================================================================
 public class DiscountServiceTests
 {
     [Fact]
-    public void IsEligibleForFreeShipping_10000円以上なら_trueを返す()
+    public void 購入金額が10000円以上なら送料無料の対象になる()
     {
         // Arrange
         var service = new DiscountService();
@@ -25,7 +29,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void IsEligibleForFreeShipping_10000円未満なら_falseを返す()
+    public void 購入金額が10000円未満なら送料無料の対象にならない()
     {
         // Arrange
         var service = new DiscountService();
@@ -39,7 +43,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void FindCoupon_存在するコードを渡すと_nullではないクーポンを返す()
+    public void 存在するクーポンコードを渡すとクーポンが見つかる()
     {
         // Arrange
         var service = new DiscountService();
@@ -53,7 +57,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void FindCoupon_存在しないコードを渡すと_nullを返す()
+    public void 存在しないクーポンコードを渡すとクーポンが見つからない()
     {
         // Arrange
         var service = new DiscountService();
@@ -67,7 +71,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void GetAvailableCouponCodes_3件のクーポンコードを含む()
+    public void 利用可能なクーポンコードが3件取得できる()
     {
         // Arrange
         var service = new DiscountService();

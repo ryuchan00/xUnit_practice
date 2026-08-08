@@ -8,11 +8,15 @@ namespace TrainingApp.Tests.Level1_SimpleAssert;
 // 目的: 3A パターン(Arrange-Act-Assert)の型を身につける。
 // 進め方: 各テストの "穴埋め" コメントの部分だけを書き換えてください。
 //         プロダクションコード(CalculatorService.cs)は変更しないでください。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level1_SimpleAssert"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level1_SimpleAssert"
 // ===================================================================
 public class CalculatorServiceTests
 {
     [Fact]
-    public void Add_2と3を渡すと_5を返す()
+    public void 二つの数値を足すと合計が返る()
     {
         // Arrange
         var calculator = new CalculatorService();
@@ -26,7 +30,7 @@ public class CalculatorServiceTests
     }
 
     [Fact]
-    public void Subtract_5から3を引くと_2を返す()
+    public void 大きい数から小さい数を引くと差が返る()
     {
         // Arrange
         var calculator = new CalculatorService();
@@ -40,7 +44,7 @@ public class CalculatorServiceTests
     }
 
     [Fact]
-    public void Divide_0で割ると_DivideByZeroExceptionを投げる()
+    public void ゼロで割ろうとすると例外が発生する()
     {
         // Arrange
         var calculator = new CalculatorService();

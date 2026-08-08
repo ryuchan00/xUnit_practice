@@ -14,6 +14,10 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // ここでは「1万円を超える決済は失敗する」という単純なビジネスルールを
 // 実装した FakePaymentGateway を使います。外部APIを呼ばずに、
 // 本物に近い振る舞いをテストできます。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class FakeExampleTests
 {
@@ -38,7 +42,7 @@ public class FakeExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_上限内の金額なら_フェイクは決済を成功させる()
+    public void 上限内の金額であれば決済は成功する()
     {
         // Arrange
         var fakePaymentGateway = new FakePaymentGateway();
@@ -55,7 +59,7 @@ public class FakeExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_上限を超える金額なら_フェイクは決済を失敗させる()
+    public void 上限を超える金額であれば決済は失敗する()
     {
         // Arrange
         var fakePaymentGateway = new FakePaymentGateway();

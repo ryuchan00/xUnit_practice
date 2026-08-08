@@ -16,6 +16,10 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 //
 // ここでは Moq を使わず、手書きの SpyOrderNotifier クラスで
 // スパイの仕組みそのものを体感します。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class SpyExampleTests
 {
@@ -34,7 +38,7 @@ public class SpyExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_決済成功時に_スパイに通知内容が記録される()
+    public void 決済が成功すると通知先に注文IDが記録される()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -56,7 +60,7 @@ public class SpyExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_複数回呼び出すと_スパイにすべて記録される()
+    public void 複数回注文すると通知先にすべての注文IDが記録される()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();

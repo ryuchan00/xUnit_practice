@@ -7,11 +7,15 @@ namespace TrainingApp.Tests.Level3_StateChange;
 // -------------------------------------------------------------------
 // これまでは戻り値を検証してきましたが、ここでは Act の実行によって
 // オブジェクトの「状態」がどう変わるかを検証します。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3_StateChange"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level3_StateChange"
 // ===================================================================
 public class ShoppingCartServiceTests
 {
     [Fact]
-    public void AddItem_商品を1つ追加すると_TotalAmountが加算される()
+    public void 商品を1つ追加すると合計金額が加算される()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -25,7 +29,7 @@ public class ShoppingCartServiceTests
     }
 
     [Fact]
-    public void AddItem_商品を2つ追加すると_TotalItemCountが合計数になる()
+    public void 商品を2種類追加すると合計個数が集計される()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -40,7 +44,7 @@ public class ShoppingCartServiceTests
     }
 
     [Fact]
-    public void RemoveItem_追加した商品を削除すると_Itemsから消える()
+    public void 追加した商品を削除すると一覧から消える()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -55,7 +59,7 @@ public class ShoppingCartServiceTests
     }
 
     [Fact]
-    public void Clear_複数商品を追加後にクリアすると_TotalAmountが0になる()
+    public void カートをクリアすると合計金額が0になる()
     {
         // Arrange
         var cart = new ShoppingCartService();

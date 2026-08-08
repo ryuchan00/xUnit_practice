@@ -14,11 +14,15 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // OrderService.PlaceOrder() は IReceiptPrinter を使いません
 // (PrintReceipt() でのみ使われます)。そのため PlaceOrder のテストでは
 // IReceiptPrinter は「ダミー」として渡すだけで十分です。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class DummyExampleTests
 {
     [Fact]
-    public void PlaceOrder_ReceiptPrinterは呼ばれないため_ダミーで十分()
+    public void 注文処理では領収書印刷は使われないためダミーで十分足りる()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();

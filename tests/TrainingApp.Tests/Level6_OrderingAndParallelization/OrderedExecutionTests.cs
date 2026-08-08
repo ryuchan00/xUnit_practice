@@ -18,6 +18,10 @@ namespace TrainingApp.Tests.Level6_OrderingAndParallelization;
 // 必ず失敗します。3つのテストすべてに正しい [TestPriority] を付けて、
 // Step1 → Step2 → Step3 の順に実行されるようにしてください。
 // (このクラスはメソッドをあえて Step3, Step1, Step2 の順に定義しています)
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // ===================================================================
 [TestCaseOrderer("TrainingApp.Tests.Infrastructure.PriorityOrderer", "TrainingApp.Tests")]
 public class OrderedExecutionTests
@@ -26,25 +30,25 @@ public class OrderedExecutionTests
 
     [Fact]
     // 穴埋め: [TestPriority(?)] を付けて、このテストが3番目に実行されるようにしてください
-    public void Step3_3番目に実行されるべきテスト()
+    public void ステップ3として実行されることを期待する()
     {
         Assert.True(ExecutionLog.Count == 2, $"想定と異なる実行順です(現在の件数: {ExecutionLog.Count})");
-        ExecutionLog.Add(nameof(Step3_3番目に実行されるべきテスト));
+        ExecutionLog.Add(nameof(ステップ3として実行されることを期待する));
     }
 
     [Fact]
     // 穴埋め: [TestPriority(?)] を付けて、このテストが最初に実行されるようにしてください
-    public void Step1_最初に実行されるべきテスト()
+    public void ステップ1として実行されることを期待する()
     {
         Assert.True(ExecutionLog.Count == 0, $"想定と異なる実行順です(現在の件数: {ExecutionLog.Count})");
-        ExecutionLog.Add(nameof(Step1_最初に実行されるべきテスト));
+        ExecutionLog.Add(nameof(ステップ1として実行されることを期待する));
     }
 
     [Fact]
     // 穴埋め: [TestPriority(?)] を付けて、このテストが2番目に実行されるようにしてください
-    public void Step2_2番目に実行されるべきテスト()
+    public void ステップ2として実行されることを期待する()
     {
         Assert.True(ExecutionLog.Count == 1, $"想定と異なる実行順です(現在の件数: {ExecutionLog.Count})");
-        ExecutionLog.Add(nameof(Step2_2番目に実行されるべきテスト));
+        ExecutionLog.Add(nameof(ステップ2として実行されることを期待する));
     }
 }

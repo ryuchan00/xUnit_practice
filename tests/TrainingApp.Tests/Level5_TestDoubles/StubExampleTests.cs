@@ -13,11 +13,15 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 //
 // ここでは IPaymentGateway を「決済は必ず成功する」というスタブに差し替え、
 // OrderService がその結果を使ってどう振る舞うかをテストします。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class StubExampleTests
 {
     [Fact]
-    public void PlaceOrder_決済が成功するスタブを渡すと_IsSuccessがtrueになる()
+    public void 決済が成功するスタブを渡すと注文も成功する()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -38,7 +42,7 @@ public class StubExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_決済が失敗するスタブを渡すと_IsSuccessがfalseになる()
+    public void 決済が失敗するスタブを渡すと注文も失敗する()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();

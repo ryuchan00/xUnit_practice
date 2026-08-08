@@ -13,11 +13,15 @@ namespace TrainingApp.Tests.Level4_ControllerSpec;
 // ここでは実際のリポジトリ実装は使わず、Moq を使って IProductRepository を
 // 「モック」に差し替え、Controller の振る舞い(ステータスコードや戻り値)だけを
 // 検証します。 Moq の詳しい使い方は Level 5 で学びます。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_ControllerSpec"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_ControllerSpec"
 // ===================================================================
 public class ProductsControllerTests
 {
     [Fact]
-    public void GetById_存在するIdを渡すと_Okとその商品を返す()
+    public void 存在するIdを指定すると商品が200OKで返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();
@@ -36,7 +40,7 @@ public class ProductsControllerTests
     }
 
     [Fact]
-    public void GetById_存在しないIdを渡すと_NotFoundを返す()
+    public void 存在しないIdを指定すると404NotFoundが返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();
@@ -52,7 +56,7 @@ public class ProductsControllerTests
     }
 
     [Fact]
-    public void Create_商品を渡すと_CreatedAtActionを返す()
+    public void 商品を登録すると201CreatedAtActionが返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();

@@ -14,6 +14,10 @@ namespace TrainingApp.Tests.Level6_OrderingAndParallelization;
 // [Collection(SharedCounterCollection.Name)] を同じ名前で複数のクラスに
 // 付けると、それらのクラス同士は並列実行されなくなり、
 // 同じ SharedCounterFixture インスタンスを安全に共有できます。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // ===================================================================
 [Collection(SharedCounterCollection.Name)]
 public class ParallelCollectionExampleTestsA
@@ -26,7 +30,7 @@ public class ParallelCollectionExampleTestsA
     }
 
     [Fact]
-    public void IncrementA_共有カウンタをインクリメントする()
+    public void 共有カウンタをインクリメントすると値が1増える()
     {
         // Arrange
         var before = _fixture.Current;
@@ -51,7 +55,7 @@ public class ParallelCollectionExampleTestsB
     }
 
     [Fact]
-    public void IncrementB_共有カウンタをインクリメントする()
+    public void 共有カウンタをインクリメントすると値が1増える()
     {
         // Arrange
         var before = _fixture.Current;

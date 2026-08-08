@@ -14,11 +14,15 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 //
 // ここでは「決済が成功したら、必ず正しい注文IDで通知が呼ばれること」を
 // モックで検証します。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class MockExampleTests
 {
     [Fact]
-    public void PlaceOrder_決済成功時に_Notifierが正しい注文IDで1回だけ呼ばれる()
+    public void 決済が成功すると正しい注文IDで通知が1回だけ行われる()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -40,7 +44,7 @@ public class MockExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_決済失敗時は_Notifierが一度も呼ばれない()
+    public void 決済が失敗すると通知は一度も行われない()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -62,7 +66,7 @@ public class MockExampleTests
     }
 
     [Fact]
-    public void PlaceOrder_PaymentGatewayが正しい金額とトークンで呼ばれる()
+    public void 注文処理では正しい金額とトークンで決済が呼び出される()
     {
         // Arrange
         var mockPaymentGateway = new Mock<IPaymentGateway>();

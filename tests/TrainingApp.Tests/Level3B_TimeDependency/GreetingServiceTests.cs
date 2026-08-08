@@ -20,11 +20,15 @@ namespace TrainingApp.Tests.Level3B_TimeDependency;
 // TimeProvider を要求するコンストラクタしか持たないため、
 // そもそもコンパイルが通りません。つまりこのテストは
 // 「時刻を固定しないとテストを書けない」設計になっています。
+// 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3B_TimeDependency"
+// Docker で実行する場合:
+//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level3B_TimeDependency"
 // ===================================================================
 public class GreetingServiceTests
 {
     [Fact]
-    public void GetGreeting_朝7時なら_おはようございますを返す()
+    public void 朝7時には_おはようございますが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -40,7 +44,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void GetGreeting_昼14時なら_こんにちはを返す()
+    public void 昼14時には_こんにちはが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -56,7 +60,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void GetGreeting_夜20時なら_こんばんはを返す()
+    public void 夜20時には_こんばんはが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -72,7 +76,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void IsWithinBusinessHours_平日10時なら_trueを返す()
+    public void 平日10時は営業時間内と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -88,7 +92,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void IsWithinBusinessHours_土曜10時なら_falseを返す()
+    public void 土曜10時は営業時間外と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -104,7 +108,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void IsExpired_有効期限が過去の日時なら_trueを返す()
+    public void 有効期限が過去の日時なら期限切れと判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -121,7 +125,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void IsExpired_有効期限が未来の日時なら_falseを返す()
+    public void 有効期限が未来の日時ならまだ有効と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
