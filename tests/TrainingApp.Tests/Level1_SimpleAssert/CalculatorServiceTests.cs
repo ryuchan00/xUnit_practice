@@ -11,12 +11,12 @@ namespace TrainingApp.Tests.Level1_SimpleAssert;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level1_SimpleAssert"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level1_SimpleAssert"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level1_SimpleAssert"
 // ===================================================================
 public class CalculatorServiceTests
 {
     [Fact]
-    public void 二つの数値を足すと合計が返る()
+    public void 二つの数値を足すとき合計が返る()
     {
         // Arrange
         var calculator = new CalculatorService();
@@ -30,7 +30,7 @@ public class CalculatorServiceTests
     }
 
     [Fact]
-    public void 大きい数から小さい数を引くと差が返る()
+    public void 大きい数から小さい数を引くとき差が返る()
     {
         // Arrange
         var calculator = new CalculatorService();
@@ -44,7 +44,7 @@ public class CalculatorServiceTests
     }
 
     [Fact]
-    public void ゼロで割ろうとすると例外が発生する()
+    public void ゼロで割ろうとするとき例外が発生する()
     {
         // Arrange
         var calculator = new CalculatorService();

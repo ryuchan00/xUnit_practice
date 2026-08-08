@@ -17,12 +17,12 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class MockExampleTests
 {
     [Fact]
-    public void 決済が成功すると正しい注文IDで通知が1回だけ行われる()
+    public void 決済が成功するとき正しい注文IDで通知が1回だけ行われる()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -44,7 +44,7 @@ public class MockExampleTests
     }
 
     [Fact]
-    public void 決済が失敗すると通知は一度も行われない()
+    public void 決済が失敗するとき通知は一度も行われない()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
@@ -66,7 +66,7 @@ public class MockExampleTests
     }
 
     [Fact]
-    public void 注文処理では正しい金額とトークンで決済が呼び出される()
+    public void 注文するとき正しい金額とトークンで決済が呼び出される()
     {
         // Arrange
         var mockPaymentGateway = new Mock<IPaymentGateway>();

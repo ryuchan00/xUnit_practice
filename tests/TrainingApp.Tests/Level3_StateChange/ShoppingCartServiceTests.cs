@@ -10,12 +10,12 @@ namespace TrainingApp.Tests.Level3_StateChange;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3_StateChange"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level3_StateChange"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3_StateChange"
 // ===================================================================
 public class ShoppingCartServiceTests
 {
     [Fact]
-    public void 商品を1つ追加すると合計金額が加算される()
+    public void 商品を1つ追加するとき合計金額が加算される()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -25,11 +25,12 @@ public class ShoppingCartServiceTests
 
         // Assert
         // 穴埋め: cart.TotalAmount が 300 になっていることを検証してください
+        // テストコードには計算式を直接書かず、期待値を直接書くようにしてください
         Assert.Fail("TODO: cart.TotalAmount を検証してください");
     }
 
     [Fact]
-    public void 商品を2種類追加すると合計個数が集計される()
+    public void 商品を2種類追加するとき合計個数が集計される()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -44,7 +45,7 @@ public class ShoppingCartServiceTests
     }
 
     [Fact]
-    public void 追加した商品を削除すると一覧から消える()
+    public void 追加した商品を削除するとき一覧から消える()
     {
         // Arrange
         var cart = new ShoppingCartService();
@@ -59,7 +60,7 @@ public class ShoppingCartServiceTests
     }
 
     [Fact]
-    public void カートをクリアすると合計金額が0になる()
+    public void カートをクリアするとき合計金額が0になる()
     {
         // Arrange
         var cart = new ShoppingCartService();

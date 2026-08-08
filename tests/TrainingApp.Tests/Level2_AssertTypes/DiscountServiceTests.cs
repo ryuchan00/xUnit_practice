@@ -10,12 +10,12 @@ namespace TrainingApp.Tests.Level2_AssertTypes;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level2_AssertTypes"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level2_AssertTypes"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level2_AssertTypes"
 // ===================================================================
 public class DiscountServiceTests
 {
     [Fact]
-    public void 購入金額が10000円以上なら送料無料の対象になる()
+    public void 購入金額が10000円以上のとき送料無料の対象になる()
     {
         // Arrange
         var service = new DiscountService();
@@ -29,7 +29,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void 購入金額が10000円未満なら送料無料の対象にならない()
+    public void 購入金額が10000円未満のとき送料無料の対象にならない()
     {
         // Arrange
         var service = new DiscountService();
@@ -43,7 +43,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void 存在するクーポンコードを渡すとクーポンが見つかる()
+    public void 存在するクーポンコードを渡すときクーポンが見つかる()
     {
         // Arrange
         var service = new DiscountService();
@@ -57,7 +57,7 @@ public class DiscountServiceTests
     }
 
     [Fact]
-    public void 存在しないクーポンコードを渡すとクーポンが見つからない()
+    public void 存在しないクーポンコードを渡すときクーポンが見つからない()
     {
         // Arrange
         var service = new DiscountService();

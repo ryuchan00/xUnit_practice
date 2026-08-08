@@ -1,7 +1,7 @@
 services:
   test:
     build: .
-    # 研修生がホスト側でテストコードを編集し、コンテナ内で dotnet test を
+    # ホスト側でテストコードを編集し、コンテナ内で dotnet test を
     # 実行できるように、tests ディレクトリをバインドマウントする。
     volumes:
       - ./tests:/workspace/tests

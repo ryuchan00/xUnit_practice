@@ -23,12 +23,12 @@ namespace TrainingApp.Tests.Level3B_TimeDependency;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3B_TimeDependency"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level3B_TimeDependency"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level3B_TimeDependency"
 // ===================================================================
 public class GreetingServiceTests
 {
     [Fact]
-    public void 朝7時には_おはようございますが返る()
+    public void 朝7時のとき_おはようございますが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -44,7 +44,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 昼14時には_こんにちはが返る()
+    public void 昼14時のとき_こんにちはが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -60,7 +60,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 夜20時には_こんばんはが返る()
+    public void 夜20時のとき_こんばんはが返る()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -76,7 +76,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 平日10時は営業時間内と判定される()
+    public void 平日10時のとき営業時間内と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -92,7 +92,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 土曜10時は営業時間外と判定される()
+    public void 土曜10時のとき営業時間外と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -108,7 +108,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 有効期限が過去の日時なら期限切れと判定される()
+    public void 有効期限が過去の日時のとき期限切れと判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();
@@ -125,7 +125,7 @@ public class GreetingServiceTests
     }
 
     [Fact]
-    public void 有効期限が未来の日時ならまだ有効と判定される()
+    public void 有効期限が未来の日時のときまだ有効と判定される()
     {
         // Arrange
         var fakeTime = new FakeTimeProvider();

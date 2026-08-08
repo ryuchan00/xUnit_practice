@@ -17,7 +17,7 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class FakeExampleTests
 {
@@ -42,7 +42,7 @@ public class FakeExampleTests
     }
 
     [Fact]
-    public void 上限内の金額であれば決済は成功する()
+    public void 上限内の金額のとき決済は成功する()
     {
         // Arrange
         var fakePaymentGateway = new FakePaymentGateway();
@@ -59,7 +59,7 @@ public class FakeExampleTests
     }
 
     [Fact]
-    public void 上限を超える金額であれば決済は失敗する()
+    public void 上限を超える金額のとき決済は失敗する()
     {
         // Arrange
         var fakePaymentGateway = new FakePaymentGateway();

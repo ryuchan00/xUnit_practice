@@ -17,12 +17,12 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // ===================================================================
 public class DummyExampleTests
 {
     [Fact]
-    public void 注文処理では領収書印刷は使われないためダミーで十分足りる()
+    public void 注文するとき領収書印刷は使われないためダミーで十分足りる()
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();

@@ -14,4 +14,6 @@ RUN dotnet restore
 
 COPY . .
 
-ENTRYPOINT ["dotnet", "test"]
+# ENTRYPOINT ではなく CMD にすることで、コマンドを隠蔽せず
+# `docker compose run --rm test dotnet test ...` のように明示的に実行できるようにする。
+CMD ["dotnet", "test"]

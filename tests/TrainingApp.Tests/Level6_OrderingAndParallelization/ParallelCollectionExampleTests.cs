@@ -17,7 +17,7 @@ namespace TrainingApp.Tests.Level6_OrderingAndParallelization;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // ===================================================================
 [Collection(SharedCounterCollection.Name)]
 public class ParallelCollectionExampleTestsA
@@ -30,7 +30,7 @@ public class ParallelCollectionExampleTestsA
     }
 
     [Fact]
-    public void 共有カウンタをインクリメントすると値が1増える()
+    public void 共有カウンタをインクリメントするとき値が1増える()
     {
         // Arrange
         var before = _fixture.Current;
@@ -55,7 +55,7 @@ public class ParallelCollectionExampleTestsB
     }
 
     [Fact]
-    public void 共有カウンタをインクリメントすると値が1増える()
+    public void 共有カウンタをインクリメントするとき値が1増える()
     {
         // Arrange
         var before = _fixture.Current;

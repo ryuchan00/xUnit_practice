@@ -21,7 +21,7 @@ namespace TrainingApp.Tests.Level6_OrderingAndParallelization;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level6_OrderingAndParallelization"
 // ===================================================================
 [TestCaseOrderer("TrainingApp.Tests.Infrastructure.PriorityOrderer", "TrainingApp.Tests")]
 public class OrderedExecutionTests

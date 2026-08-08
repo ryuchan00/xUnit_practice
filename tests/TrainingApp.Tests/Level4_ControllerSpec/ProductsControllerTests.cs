@@ -16,12 +16,12 @@ namespace TrainingApp.Tests.Level4_ControllerSpec;
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_ControllerSpec"
 // Docker で実行する場合:
-//   docker compose run --rm test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_ControllerSpec"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_ControllerSpec"
 // ===================================================================
 public class ProductsControllerTests
 {
     [Fact]
-    public void 存在するIdを指定すると商品が200OKで返る()
+    public void 存在するIdを指定するとき商品が200OKで返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();
@@ -40,7 +40,7 @@ public class ProductsControllerTests
     }
 
     [Fact]
-    public void 存在しないIdを指定すると404NotFoundが返る()
+    public void 存在しないIdを指定するとき404NotFoundが返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();
@@ -56,7 +56,7 @@ public class ProductsControllerTests
     }
 
     [Fact]
-    public void 商品を登録すると201CreatedAtActionが返る()
+    public void 商品を登録するとき201CreatedAtActionが返る()
     {
         // Arrange
         var mockRepository = new Mock<IProductRepository>();
