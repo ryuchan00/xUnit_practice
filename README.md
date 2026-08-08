@@ -9,7 +9,7 @@
 
 ### xUnit系
 
-Kent Beck が Smalltalk 向けに作った SUnit を源流とし、「テストクラス」に「テストメソッド」を並べ、`Assert.Equal(expected, actual)` のような**プログラマ向けの検証**を行うスタイルです。この教材の Level1〜8(3Bを含む)はすべてこの書き方です。
+Kent Beck が Smalltalk 向けに作った SUnit を源流とし、「テストクラス」に「テストメソッド」を並べ、`Assert.Equal(expected, actual)` のような**プログラマ向けの検証**を行うスタイルです。この教材の Level1〜7(3Bを含む)はすべてこの書き方です。
 
 | フレームワーク | 言語 |
 |---|---|
@@ -89,7 +89,7 @@ tests/TrainingApp.Tests/    穴埋めテスト(研修課題)
   Level4_ControllerSpec/     Level 4
   Level5_TestDoubles/        Level 5 (ダミー/スタブ/モック/スパイ/フェイク)
   Level6_OrderingAndParallelization/  Level 6 (実行順序・並列化)
-  Level8_IntegrationTesting/  Level 8 (WebApplicationFactoryによる結合テスト)
+  Level7_IntegrationTesting/  Level 7 (WebApplicationFactoryによる結合テスト)
   Infrastructure/            テスト順序制御・共有フィクスチャなどの補助コード
 
 Dockerfile / docker-compose.yml   Docker でテストを実行するための構成
@@ -187,11 +187,34 @@ xUnit は本来「テストの実行順序に依存しない」ことを前提�
 xUnit はデフォルトで異なるテストクラスを並列実行します。共有状態を持つテストクラス同士を `[Collection("...")]` で同じコレクションにまとめることで、並列実行を防ぎ、安全に状態を共有する方法を学ぶ。
 アセンブリ全体の並列度は `tests/TrainingApp.Tests/xunit.runner.json` で設定している。
 
-### Level 7: ミューテーションテストによるテストの質の検証(発展)
+### Level 7: DIコンテナと WebApplicationFactory を使った結合テスト
+`ProductsApiFactory.cs` / `ProductsEndpointTests.cs`
 
-Level1〜6 では「テストを書くこと」自体を学びましたが、書いたテストが本当にバグを検知できるのか?は別の問題です。たとえば `Assert.NotNull(actual)` だけでは、`actual` の中身が間違っていてもテストは気づけません。
+Level4 では `ProductsController` を直接 `new` してテストしました(コンストラクタにモックを手動で注入)。Level7 ではさらに一歩進み、`WebApplicationFactory<Program>` を使ってアプリを実際に起動し、実際の HTTP エンドポイント(`GET`/`POST`)にリクエストを送って検証します。
+
+- ルーティング・モデルバインディング・JSONシリアライズまで含めて動作を確認できる、より「本物」に近いテストです
+- `Program.cs` に登録済みの本物の `IProductRepository` 実装を、DIコンテナのレベルでモックに差し替えます(`services.RemoveAll<IProductRepository>()` → `services.AddSingleton(mock.Object)`)
+- `ProductsApiFactory` は xUnit の **Fixture**(`IClassFixture<T>` で共有されるセットアップ用オブジェクト)です。Level6 の `SharedCounterFixture` は完成品を「使う」だけでしたが、Level7 では `ConfigureWebHost` の中身を自分で実装することで、Fixture を「作る」体験もできます
+
+> このテストは Level4 よりも実行が遅く、依存の差し替えもDIコンテナ経由と手間が増えます。前述の「テストサイズ」で言えば Level4 が Small に近いのに対し、Level7 は実際のHTTPスタックを起動する分 Medium に近づきます。「速くて安価なテストを土台に、遅くて本物に近いテストを少数だけ持つ」というテストピラミッドの考え方を、Level4 と Level7 の対比で体感できます。
+
+## 使用技術
+
+- .NET 10 / ASP.NET Core Web API
+- xUnit 2.5
+- Moq 4.20 (モック/スタブの作成)
+- Microsoft.Extensions.TimeProvider.Testing (時刻のフェイク)
+- Microsoft.AspNetCore.Mvc.Testing (WebApplicationFactoryによる結合テスト)
+- Stryker.NET 4.16 (ミューテーションテスト)
+- Docker / Docker Compose (任意)
+
+## 付録: ミューテーションテストによるテストの質の検証
+
+Level1〜7 では「テストを書くこと」自体を学びましたが、書いたテストが本当にバグを検知できるのか?は別の問題です。たとえば `Assert.NotNull(actual)` だけでは、`actual` の中身が間違っていてもテストは気づけません。
 
 **ミューテーションテスト**は、プロダクションコードにわざと小さなバグ(ミュータント)を注入し、既存のテストがそのバグを検知して落ちるかどうかを機械的にチェックする手法です。テストが検知できたミュータントの割合を「ミューテーションスコア」と呼び、これがテストカバレッジよりも「テストの実効性」に近い指標になります。
+
+これまでの Level1〜7 とは違い、穴埋めをすればクリアという単純な課題ではなく、**自分の書いたテストの弱点を自分で見つけて補強する**という、テストに対する一段深い視点が必要になります。研修の中でも一番難易度が高い内容のため、付録という位置づけにしています。
 
 この教材では [Stryker.NET](https://stryker-mutator.io/docs/stryker-net/introduction/) を dotnet ローカルツールとして導入しています。
 
@@ -204,27 +227,12 @@ cd tests/TrainingApp.Tests
 dotnet stryker
 ```
 
-対象は `stryker-config.json` で `CalculatorService` / `DiscountService` / `ShoppingCartService` に絞っています(実行時間を抑えるため)。実行後、生存した(検知できなかった)ミュータントがあれば、それを殺せるように Level1〜3 で書いた Assert を見直すのが Level 7 の課題です。
+Docker で実行する場合は、イメージのビルド時に `dotnet tool restore` 済みなので、そのまま `dotnet stryker` を実行できます。
+
+```bash
+docker compose run --rm test dotnet stryker
+```
+
+対象は `stryker-config.json` で `CalculatorService` / `DiscountService` / `ShoppingCartService` に絞っています(実行時間を抑えるため)。実行後、生存した(検知できなかった)ミュータントがあれば、それを殺せるように Level1〜3 で書いた Assert を見直すのが課題です。
 
 > **注意**: ミューテーションテストは実行に時間がかかります(対象クラスやテスト数に応じて数分〜)。まずは Level1〜6 をすべて Green にしてから実行してください。テストが1つでも失敗した状態では Stryker は実行できません(初期テスト実行の失敗率が高いと解析を中断する仕組みになっています)。
-
-### Level 8: DIコンテナと WebApplicationFactory を使った結合テスト
-`ProductsApiFactory.cs` / `ProductsEndpointTests.cs`
-
-Level4 では `ProductsController` を直接 `new` してテストしました(コンストラクタにモックを手動で注入)。Level8 ではさらに一歩進み、`WebApplicationFactory<Program>` を使ってアプリを実際に起動し、実際の HTTP エンドポイント(`GET`/`POST`)にリクエストを送って検証します。
-
-- ルーティング・モデルバインディング・JSONシリアライズまで含めて動作を確認できる、より「本物」に近いテストです
-- `Program.cs` に登録済みの本物の `IProductRepository` 実装を、DIコンテナのレベルでモックに差し替えます(`services.RemoveAll<IProductRepository>()` → `services.AddSingleton(mock.Object)`)
-- `ProductsApiFactory` は xUnit の **Fixture**(`IClassFixture<T>` で共有されるセットアップ用オブジェクト)です。Level6 の `SharedCounterFixture` は完成品を「使う」だけでしたが、Level8 では `ConfigureWebHost` の中身を自分で実装することで、Fixture を「作る」体験もできます
-
-> このテストは Level4 よりも実行が遅く、依存の差し替えもDIコンテナ経由と手間が増えます。前述の「テストサイズ」で言えば Level4 が Small に近いのに対し、Level8 は実際のHTTPスタックを起動する分 Medium に近づきます。「速くて安価なテストを土台に、遅くて本物に近いテストを少数だけ持つ」というテストピラミッドの考え方を、Level4 と Level8 の対比で体感できます。
-
-## 使用技術
-
-- .NET 10 / ASP.NET Core Web API
-- xUnit 2.5
-- Moq 4.20 (モック/スタブの作成)
-- Microsoft.Extensions.TimeProvider.Testing (時刻のフェイク)
-- Microsoft.AspNetCore.Mvc.Testing (WebApplicationFactoryによる結合テスト)
-- Stryker.NET 4.16 (ミューテーションテスト)
-- Docker / Docker Compose (任意)

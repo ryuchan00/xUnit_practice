@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using TrainingApp.Services;
 
-namespace TrainingApp.Tests.Level8_IntegrationTesting;
+namespace TrainingApp.Tests.Level7_IntegrationTesting;
 
 /// <summary>
 /// アプリ全体(DIコンテナ・ルーティング・モデルバインディング・JSONシリアライズ)を

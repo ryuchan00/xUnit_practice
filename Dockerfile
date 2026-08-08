@@ -12,6 +12,10 @@ COPY src/TrainingApp/TrainingApp.csproj src/TrainingApp/
 COPY tests/TrainingApp.Tests/TrainingApp.Tests.csproj tests/TrainingApp.Tests/
 RUN dotnet restore
 
+# Stryker.NET などのローカルツール(dotnet-tools.json)もイメージ内で復元しておく。
+COPY dotnet-tools.json ./
+RUN dotnet tool restore
+
 COPY . .
 
 # ENTRYPOINT ではなく CMD にすることで、コマンドを隠蔽せず

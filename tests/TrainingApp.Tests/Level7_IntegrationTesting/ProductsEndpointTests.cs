@@ -4,10 +4,10 @@ using Moq;
 using TrainingApp.Models;
 using TrainingApp.Services;
 
-namespace TrainingApp.Tests.Level8_IntegrationTesting;
+namespace TrainingApp.Tests.Level7_IntegrationTesting;
 
 // ===================================================================
-// Level 8: DIコンテナと WebApplicationFactory を使った結合テスト
+// Level 7: DIコンテナと WebApplicationFactory を使った結合テスト
 // -------------------------------------------------------------------
 // Level4 では Controller クラスを直接 `new` してテストしました(コンストラクタ注入)。
 // ここでは一歩進んで、アプリを実際に起動し、実際の HTTP エンドポイントに
@@ -19,9 +19,9 @@ namespace TrainingApp.Tests.Level8_IntegrationTesting;
 // これにより「実際のDIコンテナ経由でモックが注入される」ことを体感できます。
 //
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
-//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level8_IntegrationTesting"
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level7_IntegrationTesting"
 // Docker で実行する場合:
-//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level8_IntegrationTesting"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level7_IntegrationTesting"
 // ===================================================================
 public class ProductsEndpointTests : IClassFixture<ProductsApiFactory>
 {
