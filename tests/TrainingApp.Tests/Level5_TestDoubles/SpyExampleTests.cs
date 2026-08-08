@@ -7,15 +7,15 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // ===================================================================
 // テストダブル 4: スパイ (Spy)
 // -------------------------------------------------------------------
-// スパイとは「実際に呼ばれた内容(引数・回数)を自分で記録しておき、
-// テストの後半でその記録を検証する」オブジェクトです。
+// 参考: http://xunitpatterns.com/Mock%20Object.html (Gerard Meszaros)
 //
-// モックとの違い:
-//   モック   = 「呼ばれるはずだ」という期待を"事前に"設定し、フレームワークが自動検証する
-//   スパイ   = 呼び出しの記録だけを取っておき、"事後に"自分でその記録を検証する
+// モックとスパイの本質的な違いは「間接出力の評価をどこで行うか」です。
+//   モック = テストダブル自身が評価する(Self Verifying。例: mock.Verify(...))
+//   スパイ = テストダブルは記録するだけで、評価はテストコード側が行う
 //
-// ここでは Moq を使わず、手書きの SpyOrderNotifier クラスで
-// スパイの仕組みそのものを体感します。
+// ここでは Moq を使わず、手書きの SpyOrderNotifier クラスでこの仕組みを
+// 体感します。あらかじめ「呼ばれるはずだ」という期待は一切持たず、
+// ただ呼び出された内容を記録するだけ。検証(Assert)はテストコード側で行います。
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
 //   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
 // Docker で実行する場合:
@@ -64,9 +64,8 @@ public class SpyExampleTests
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
-        stubPaymentGateway
-            .Setup(g => g.Charge(It.IsAny<decimal>(), It.IsAny<string>()))
-            .Returns(new PaymentResult(true, "TXN-SPY"));
+        // 穴埋め: どんな引数で Charge が呼ばれても、成功する PaymentResult を返すよう Setup してください
+        // ヒント: new PaymentResult(true, "TXN-SPY") を返すようにする
 
         var spyNotifier = new SpyOrderNotifier();
         var receiptPrinter = new Mock<IReceiptPrinter>().Object;
@@ -77,8 +76,8 @@ public class SpyExampleTests
         orderService.PlaceOrder(orderId: 2, amount: 200m, cardToken: "tok_2");
 
         // Assert
-        // 穴埋め: spyNotifier.NotifiedOrderIds が [1, 2] という並びで記録されていることを検証してください
-        // ヒント: Assert.Equal(new List<int> { 1, 2 }, spyNotifier.NotifiedOrderIds);
-        Assert.Fail("TODO: NotifiedOrderIds を検証してください");
+        // このテストは Arrange を正しく穴埋めできれば緑になります。
+        // (穴埋めが無い間は Charge が null を返すため NullReferenceException で落ちます)
+        Assert.Equal(new List<int> { 1, 2 }, spyNotifier.NotifiedOrderIds);
     }
 }

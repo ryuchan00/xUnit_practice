@@ -1,6 +1,7 @@
-# xUnit 穴埋め研修
+# ユニットテスト穴埋め研修
 
 新人〜ミドルエンジニア向けの、xUnit / .NET 10 を使った「穴埋め形式」のユニットテスト研修教材です。
+xUnit はあくまで題材として採用しているツールであり、この教材で身につけてほしいのは特定のフレームワークの使い方ではなく、**ユニットテストの考え方そのもの**です。
 対象読者は「テストダブル(モック・スタブなど)が全く分からない」レベルを想定しています。
 
 ## イントロダクション: テストフレームワークの系譜(xUnit系 / BDD系)
@@ -19,9 +20,26 @@ Kent Beck が Smalltalk 向けに作った SUnit を源流とし、「テスト�
 | **PHPUnit** | PHP |
 | **pytest** | Python |
 
+xUnit系の例(xUnit.net):
+
+```csharp
+public class CalculatorTests
+{
+    [Fact]
+    public void Add_2と3を渡すと_5を返す()
+    {
+        var calculator = new Calculator();
+
+        var actual = calculator.Add(2, 3);
+
+        Assert.Equal(5, actual);
+    }
+}
+```
+
 ### BDD系(Behavior-Driven Development)
 
-「テスト」ではなく「仕様(Specification)」を書く、という発想のスタイルです。`describe` / `context` / `it` (あるいは Gherkin 記法の `Given` / `When` / `Then`) を使って、**人が読んでも仕様として理解できる**形でテストを書きます。非エンジニアのステークホルダーとも仕様を共有しやすい、という狙いがあります。
+「テスト」ではなく「仕様(Specification)」を書く、という発想のスタイルです。`describe` / `context` / `it` (あるいは Gherkin 記法の `Given` / `When` / `Then`) を使って、**人が読んでも仕様として理解できる**形でテストを書きます。
 
 | フレームワーク | 言語 | 備考 |
 |---|---|---|
@@ -33,9 +51,29 @@ Kent Beck が Smalltalk 向けに作った SUnit を源流とし、「テスト�
 | **JBehave** | Java | Cucumber と同様 Gherkin ライクな記法で書ける、Java向けBDDフレームワークの草分け的存在 |
 | **SpecFlow / Reqnroll** | .NET | .NET 版 Cucumber。Gherkin の feature ファイルを使う |
 
+BDD系の例(RSpec):
+
+```ruby
+RSpec.describe Calculator do
+  describe "#add" do
+    context "2と3を渡したとき" do
+      it "5を返す" do
+        calculator = Calculator.new
+
+        result = calculator.add(2, 3)
+
+        expect(result).to eq(5)
+      end
+    end
+  end
+end
+```
+
+同じ「2と3を足すと5になる」という内容でも、xUnit系は「テストメソッド」として書くのに対し、RSpec は `describe`(対象) → `context`(状況) → `it`(期待する振る舞い) という入れ子構造で、文章のように読める「仕様」として書きます。
+
 ### ハイブリッドな例: Jest / Vitest
 
-**Jest**(JS/TS)や **Vitest**(JS/TS、Vite向け)は、`describe`/`it` という BDD系の構文を採用していますが、アサーションは `expect(actual).toBe(expected)` のように xUnit 系に近い書き方です。「構文はBDDから借りているが、思想としてはxUnit系寄り」のハイブリッドと捉えるとわかりやすいです。
+**Jest**(JS/TS)や **Vitest**(JS/TS、Vite向け)は、`describe`/`it` という BDD系の構文を採用していますが、アサーションは `expect(actual).toBe(expected)` のように xUnit 系に近い書き方です。「構文はBDDから借りているが、思想としてはxUnit系寄り」のハイブリッドとして捉えられます。
 
 ### まとめ
 
@@ -105,11 +143,16 @@ dotnet-tools.json                 Stryker.NET などのローカルツールの�
 - **テストピラミッド**: 「実行が速く安価なユニットテストを土台に大量に持ち、実行が遅く高価な結合テスト・E2Eテストは少数に絞る」という古典的な考え方。下から ユニット → 結合 → E2E の順に積み上がる三角形で表される。
 - **テストトロフィー** (Kent C. Dodds 氏が提唱): フロントエンド開発などモジュール間の結合が多い領域では、細かすぎるユニットテストよりも「結合テスト」に比重を置いたほうが費用対効果が高いという考え方。ユニット層を薄く、結合層を厚くしたトロフィー(優勝カップ)型の比率になる。
 
+| テストピラミッド | テストトロフィー |
+|---|---|
+| ![Test Pyramid](https://martinfowler.com/images/testPyramid/test-pyramid.png) | ![Testing Trophy](https://pbs.twimg.com/media/DVUoM94VQAAzuws.jpg) |
+| [出典: Martin Fowler - TestPyramid](https://martinfowler.com/bliki/TestPyramid.html) | [出典: Kent C. Dodds - Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests) |
+
 どちらが正しいという話ではなく、**対象システムの特性によって最適なバランスは変わる**、という点が重要です。この教材(Level1〜4)は、まず基本となるユニットテスト(テストピラミッドの土台)の書き方を身につけることを目的としています。
 
 ### 「単体テスト」「結合テスト」の定義はチームによって違う
 
-Level 4 の `ProductsControllerTests` は、依存(`IProductRepository`)をモックに差し替えているため、この教材では便宜上「ユニットテスト」として扱っています。しかし、「Controller のテストは(HTTPパイプラインやDIコンテナを含めて検証しないと)結合テストとは呼べない」と考えるチームもあれば、「モックに差し替えていればユニットテスト」と考えるチームもあり、**「単体テスト」「結合テスト」という言葉の境界はチームや文脈によってかなり揺れます**。
+たとえば「依存をモックに差し替えていればユニットテスト」と考えるチームもあれば、「実際のHTTPパイプラインやDIコンテナまで含めて検証しないと結合テストとは呼べない」と考えるチームもあり、**「単体テスト」「結合テスト」という言葉の境界はチームや文脈によってかなり揺れます**。(この教材では Level4 と Level7 で、実際にこの境界線上にある2つのテストの書き方を比較します)
 
 日本語で著名なテストの実践者である t_wada(和田卓人)氏は、この曖昧さを踏まえて、Google のテスト文化などで使われる **「テストサイズ」** という尺度(Small / Medium / Large)を紹介しています。これは「単体/結合」という開発者の主観に依存しがちな分類の代わりに、「外部プロセス通信の有無」「ネットワーク越しの通信の有無」「実行時間」といった**客観的な基準**でテストを分類する考え方です。
 
@@ -150,6 +193,8 @@ ASP.NET Core の Controller をテストし、`OkObjectResult` / `NotFoundResult
 
 > 依存をすべてモックに差し替えて Controller クラス単体を直接 `new` しているため、この教材では「ユニットテスト」に分類しています。ただし、チームによってはこれを「結合テスト」と呼ぶ場合もあります(詳しくは前述の「単体テスト・結合テストの定義はチームによって違う」を参照)。
 
+参考: [Microsoft Learn - コントローラーのテスト](https://learn.microsoft.com/ja-jp/aspnet/core/mvc/controllers/testing?view=aspnetcore-10.0) に、Controller をユニットテストする際の考え方が詳しくまとまっています。
+
 ### Level 5: テストダブル
 
 すべて「外部の決済API」を模した `IPaymentGateway`(と関連する `IOrderNotifier` / `IReceiptPrinter`)を題材にしています。
@@ -158,9 +203,18 @@ ASP.NET Core の Controller をテストし、`OkObjectResult` / `NotFoundResult
 |---|---|---|
 | ダミー (Dummy) | `DummyExampleTests.cs` | 引数として必要だが、テスト対象のロジックの中では一切使われないオブジェクト |
 | スタブ (Stub) | `StubExampleTests.cs` | あらかじめ決められた戻り値を返すだけ。呼ばれ方は検証しない |
-| モック (Mock) | `MockExampleTests.cs` | 「呼ばれるはずだ」という期待を事前に設定し、事後に `Verify` で検証する |
-| スパイ (Spy) | `SpyExampleTests.cs` | 呼び出しの記録を自分で保持しておき、事後にその記録を検証する(手書き実装) |
+| モック (Mock) | `MockExampleTests.cs` | 「呼ばれるはずだ」という期待を事前に設定し、事後に `Verify()` でテストダブル自身に評価させる |
+| スパイ (Spy) | `SpyExampleTests.cs` | 呼び出しの記録を自分で保持しておき、評価はテストコード側が `Assert` で行う(手書き実装) |
 | フェイク (Fake) | `FakeExampleTests.cs` | 簡易的だが実際に動くロジックを持つ、ミニチュア版の本物 |
+
+#### モックとスパイの違い(参考: [xUnit Test Patterns - Mock Object](http://xunitpatterns.com/Mock%20Object.html))
+
+モックとスパイの本質的な違いは「間接出力の評価をどこで行うか」です。
+
+- **モック**: テストダブル自身が評価する(Self Verifying)。Moq では `Verify()` を呼ぶことで、評価をモックオブジェクトに委ねる
+- **スパイ**: テストダブルは記録するだけで、評価はテストコード側が行う。`SpyExampleTests.cs` では手書きの `SpyOrderNotifier` に記録させ、通常の `Assert` で検証している
+
+`MockExampleTests.cs` と `SpyExampleTests.cs` を見比べて、この違いを確認してください。
 
 #### なぜ外部APIをユニットテストに含めないのか
 

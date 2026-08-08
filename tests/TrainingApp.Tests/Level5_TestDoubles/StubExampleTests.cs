@@ -46,9 +46,8 @@ public class StubExampleTests
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
-        stubPaymentGateway
-            .Setup(g => g.Charge(It.IsAny<decimal>(), It.IsAny<string>()))
-            .Returns(new PaymentResult(false, TransactionId: string.Empty));
+        // 穴埋め: どんな引数で Charge が呼ばれても、失敗する PaymentResult を返すよう Setup してください
+        // ヒント: new PaymentResult(false, TransactionId: string.Empty) を返すようにする
 
         var notifier = new Mock<IOrderNotifier>().Object;
         var receiptPrinter = new Mock<IReceiptPrinter>().Object;
@@ -58,7 +57,8 @@ public class StubExampleTests
         var actual = orderService.PlaceOrder(orderId: 1, amount: 500m, cardToken: "tok_any");
 
         // Assert
-        // 穴埋め: actual.IsSuccess が false であることを検証してください
-        Assert.Fail("TODO: actual.IsSuccess を検証してください");
+        // このテストは Arrange を正しく穴埋めできれば緑になります。
+        // (穴埋めが無い間は Charge が null を返すため NullReferenceException で落ちます)
+        Assert.False(actual.IsSuccess);
     }
 }

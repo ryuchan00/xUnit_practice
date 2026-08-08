@@ -48,9 +48,8 @@ public class MockExampleTests
     {
         // Arrange
         var stubPaymentGateway = new Mock<IPaymentGateway>();
-        stubPaymentGateway
-            .Setup(g => g.Charge(It.IsAny<decimal>(), It.IsAny<string>()))
-            .Returns(new PaymentResult(false, TransactionId: string.Empty));
+        // 穴埋め: どんな引数で Charge が呼ばれても、失敗する PaymentResult を返すよう Setup してください
+        // ヒント: new PaymentResult(false, TransactionId: string.Empty) を返すようにする
 
         var mockNotifier = new Mock<IOrderNotifier>();
         var receiptPrinter = new Mock<IReceiptPrinter>().Object;
@@ -60,9 +59,9 @@ public class MockExampleTests
         orderService.PlaceOrder(orderId: 123, amount: 500m, cardToken: "tok_any");
 
         // Assert
-        // 穴埋め: mockNotifier.Object.NotifyOrderCompleted が一度も呼ばれていないことを検証してください
-        // ヒント: Times.Never を使います
-        Assert.Fail("TODO: mockNotifier.Verify(Times.Never) を使って検証してください");
+        // このテストは Arrange を正しく穴埋めできれば緑になります。
+        // (穴埋めが無い間は Charge が null を返すため NullReferenceException で落ちます)
+        mockNotifier.Verify(n => n.NotifyOrderCompleted(It.IsAny<int>()), Times.Never);
     }
 
     [Fact]
