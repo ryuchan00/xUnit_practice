@@ -1,0 +1,15 @@
+{
+  "stryker-config": {
+    "mutate": [
+      "../../src/TrainingApp/Services/CalculatorService.cs",
+      "../../src/TrainingApp/Services/DiscountService.cs",
+      "../../src/TrainingApp/Services/ShoppingCartService.cs"
+    ],
+    "reporters": ["html", "progress"],
+    "thresholds": {
+      "high": 80,
+      "low": 60,
+      "break": 0
+    }
+  }
+}
