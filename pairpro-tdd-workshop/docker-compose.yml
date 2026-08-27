@@ -1,7 +1,0 @@
-services:
-  tdd:
-    build: .
-    volumes:
-      - .:/workspace
-    # `docker compose run --rm tdd` で dotnet test。
-    # `docker compose run --rm tdd dotnet test --filter ...` のように上書きも可。
