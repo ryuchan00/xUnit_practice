@@ -124,6 +124,7 @@ tests/TrainingApp.Tests/    穴埋めテスト(研修課題)
   Level5_TestDoubles/        Level 5 (ダミー/スタブ/モック/スパイ/フェイク)
   Level6_OrderingAndParallelization/  Level 6 (実行順序・並列化)
   Level7_IntegrationTesting/  Level 7 (WebApplicationFactoryによる結合テスト)
+  Level8_CodeCoverage/       Level 8 (コードカバレッジのはかり方とベストプラクティス / READMEのみ)
   Infrastructure/            テスト順序制御・共有フィクスチャなどの補助コード
 
 Dockerfile / docker-compose.yml   Docker でテストを実行するための構成
@@ -248,6 +249,17 @@ Level4 では `ProductsController` を直接 `new` してテストしました(�
 
 > このテストは Level4 よりも実行が遅く、依存の差し替えもDIコンテナ経由と手間が増えます。前述の「テストサイズ」で言えば Level4 が Small に近いのに対し、Level7 は実際のHTTPスタックを起動する分 Medium に近づきます。「速くて安価なテストを土台に、遅くて本物に近いテストを少数だけ持つ」というテストピラミッドの考え方を、Level4 と Level7 の対比で体感できます。
 
+### Level 8: コードカバレッジのはかり方とベストプラクティス
+`Level8_CodeCoverage/README.md`
+
+Level1〜7 で書いたテストが、プロダクションコードのどこを実行できているかを **コードカバレッジ** で計測します。穴埋め課題ではなく、実際に計測してレポートを読み、テストが薄い場所を自分で見つける Level です。
+
+- `dotnet test --collect:"XPlat Code Coverage"`(既存の `coverlet.collector` を利用)でカバレッジを取得し、ReportGenerator で HTML レポートに変換して読む
+- line coverage / branch coverage の違いを確認し、「line は高いが branch が低い」クラスの未通過分岐をテストで埋める
+- カバレッジとの付き合い方(目標値にしない / 80〜90%が現実的な上限で100%は疑わしい / ゲートにするなら絶対値より差分)を整理する
+
+> カバレッジは「コードが実行されたか」しか示さず、「正しく検証されたか」は測れません。付録のミューテーションテスト(深さ)と Level8 のカバレッジ(広さ)はセットで見る、という位置づけです。
+
 ## 使用技術
 
 - .NET 10 / ASP.NET Core Web API
@@ -255,6 +267,8 @@ Level4 では `ProductsController` を直接 `new` してテストしました(�
 - Moq 4.20 (モック/スタブの作成)
 - Microsoft.Extensions.TimeProvider.Testing (時刻のフェイク)
 - Microsoft.AspNetCore.Mvc.Testing (WebApplicationFactoryによる結合テスト)
+- coverlet.collector 6.0 (コードカバレッジの計測)
+- ReportGenerator 5.5 (カバレッジのHTMLレポート生成 / Level8。`dotnet-tools.json` にローカルツールとして登録)
 - Stryker.NET 4.16 (ミューテーションテスト)
 - Docker / Docker Compose (任意)
 
@@ -262,7 +276,7 @@ Level4 では `ProductsController` を直接 `new` してテストしました(�
 
 Level1〜7 では「テストを書くこと」自体を学びましたが、書いたテストが本当にバグを検知できるのか?は別の問題です。たとえば `Assert.NotNull(actual)` だけでは、`actual` の中身が間違っていてもテストは気づけません。
 
-**ミューテーションテスト**は、プロダクションコードにわざと小さなバグ(ミュータント)を注入し、既存のテストがそのバグを検知して落ちるかどうかを機械的にチェックする手法です。テストが検知できたミュータントの割合を「ミューテーションスコア」と呼び、これがテストカバレッジよりも「テストの実効性」に近い指標になります。
+**ミューテーションテスト**は、プロダクションコードにわざと小さなバグ(ミュータント)を注入し、既存のテストがそのバグを検知して落ちるかどうかを機械的にチェックする手法です。テストが検知できたミュータントの割合を「ミューテーションスコア」と呼び、これが Level8 のコードカバレッジよりも「テストの実効性」に近い指標になります(カバレッジ=そのコードが実行されたか、ミューテーションスコア=その振る舞いが検証されているか)。
 
 これまでの Level1〜7 とは違い、穴埋めをすればクリアという単純な課題ではなく、**自分の書いたテストの弱点を自分で見つけて補強する**という、テストに対する一段深い視点が必要になります。研修の中でも一番難易度が高い内容のため、付録という位置づけにしています。
 

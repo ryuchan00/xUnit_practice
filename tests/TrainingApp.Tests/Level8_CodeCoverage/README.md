@@ -43,10 +43,12 @@ dotnet test --collect:"XPlat Code Coverage"
 ### HTML レポートに変換する
 
 XML のままでは読みにくいので [ReportGenerator](https://github.com/danielpalme/ReportGenerator) で変換します。
+この教材では `dotnet-tools.json` にローカルツールとして登録済みなので、`dotnet tool restore` で揃います
+(Docker イメージはビルド時に restore 済みなので、そのまま実行できます)。
 
 ```bash
-# 初回のみ: グローバルツールとして導入
-dotnet tool install -g dotnet-reportgenerator-globaltool
+# 初回のみ: ローカルツールを復元
+dotnet tool restore
 
 reportgenerator \
   -reports:"TestResults/**/coverage.cobertura.xml" \
@@ -55,9 +57,6 @@ reportgenerator \
 
 # coveragereport/index.html をブラウザで開く
 ```
-
-> CI では ReportGenerator を dotnet ローカルツール(`dotnet-tools.json`)に加えておくと、
-> `dotnet tool restore` だけで揃うので再現性が上がります。
 
 ### 計測対象から除外する
 
