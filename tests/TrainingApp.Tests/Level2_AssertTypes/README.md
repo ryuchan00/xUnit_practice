@@ -21,7 +21,9 @@ public void FindUser_存在するIDを渡すと_ユーザーが見つかる()
     var actual = repository.FindById(1);
 
     // Assert
+    // Nullではないことを検証
     Assert.NotNull(actual);
+    // Trueであることを検証
     Assert.True(actual.IsActive);
 }
 ```

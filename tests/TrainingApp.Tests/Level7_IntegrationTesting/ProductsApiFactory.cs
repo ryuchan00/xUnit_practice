@@ -12,7 +12,7 @@ namespace TrainingApp.Tests.Level7_IntegrationTesting;
 /// 実際に起動しつつ、外部依存である IProductRepository だけをモックに差し替えるための
 /// WebApplicationFactory(= xUnit の Fixture)。
 ///
-/// Level4/5 では Controller を直接 `new` してテストしていたが(コンストラクタ注入)、
+/// Level5 では Controller を直接 `new` してテストしていたが(コンストラクタ注入)、
 /// ここでは Program.cs に実際に登録されている依存関係を、DIコンテナのレベルで
 /// 差し替える点が異なる。
 ///

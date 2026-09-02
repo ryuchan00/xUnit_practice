@@ -27,117 +27,42 @@ namespace TrainingApp.Tests.Level3B_TimeDependency;
 // ===================================================================
 public class GreetingServiceTests
 {
-    [Fact]
-    public void 朝7時のとき_おはようございますが返る()
+    // --- GetGreeting() のテスト ---
+    public class GetGreeting
     {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 7, 0, 0, TimeSpan.Zero)); // 2026-08-10(月) 07:00 UTC
-        var service = new GreetingService(fakeTime);
+        [Fact]
+        public void 朝7時のとき_おはようございますが返る()
+        {
+            // Arrange
+            var fakeTime = new FakeTimeProvider();
+            fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 7, 0, 0, TimeSpan.Zero)); // 2026-08-10(月) 07:00 UTC
+            var service = new GreetingService(fakeTime);
 
-        // Act
-        var actual = service.GetGreeting();
+            // Act
 
-        // Assert
-        // 穴埋め: actual が "おはようございます" であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
+            // Assert
+        }
 
-    [Fact]
-    public void 昼14時のとき_こんにちはが返る()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 14, 0, 0, TimeSpan.Zero)); // 2026-08-10(月) 14:00 UTC
-        var service = new GreetingService(fakeTime);
+        [Fact]
+        public void 昼14時のとき_こんにちはが返る()
+        {
+            // Arrange
 
-        // Act
-        var actual = service.GetGreeting();
+            // Act
 
-        // Assert
-        // 穴埋め: actual が "こんにちは" であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
+            // Assert
+        }
+        
 
-    [Fact]
-    public void 夜20時のとき_こんばんはが返る()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 20, 0, 0, TimeSpan.Zero)); // 2026-08-10(月) 20:00 UTC
-        var service = new GreetingService(fakeTime);
+        [Fact]
+        public void 夜20時のとき_こんばんはが返る()
+        {
+            // Arrange
 
-        // Act
-        var actual = service.GetGreeting();
+            // Act
 
-        // Assert
-        // 穴埋め: actual が "こんばんは" であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
-
-    [Fact]
-    public void 平日10時のとき営業時間内と判定される()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 10, 0, 0, TimeSpan.Zero)); // 2026-08-10(月) 10:00 UTC
-        var service = new GreetingService(fakeTime);
-
-        // Act
-        var actual = service.IsWithinBusinessHours();
-
-        // Assert
-        // 穴埋め: actual が true であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
-
-    [Fact]
-    public void 土曜10時のとき営業時間外と判定される()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 8, 10, 0, 0, TimeSpan.Zero)); // 2026-08-08(土) 10:00 UTC
-        var service = new GreetingService(fakeTime);
-
-        // Act
-        var actual = service.IsWithinBusinessHours();
-
-        // Assert
-        // 穴埋め: 時刻は営業時間内(10時)でも、曜日が土曜日なので false になることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
-
-    [Fact]
-    public void 有効期限が過去の日時のとき期限切れと判定される()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 0, 0, 0, TimeSpan.Zero));
-        var service = new GreetingService(fakeTime);
-        var expiresAt = new DateTimeOffset(2026, 8, 1, 0, 0, 0, TimeSpan.Zero); // 現在より過去
-
-        // Act
-        var actual = service.IsExpired(expiresAt);
-
-        // Assert
-        // 穴埋め: actual が true であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
-    }
-
-    [Fact]
-    public void 有効期限が未来の日時のときまだ有効と判定される()
-    {
-        // Arrange
-        var fakeTime = new FakeTimeProvider();
-        fakeTime.SetUtcNow(new DateTimeOffset(2026, 8, 10, 0, 0, 0, TimeSpan.Zero));
-        var service = new GreetingService(fakeTime);
-        var expiresAt = new DateTimeOffset(2026, 9, 1, 0, 0, 0, TimeSpan.Zero); // 現在より未来
-
-        // Act
-        var actual = service.IsExpired(expiresAt);
-
-        // Assert
-        // 穴埋め: actual が false であることを検証してください
-        Assert.Fail("TODO: actual を検証してください");
+            // Assert
+        }
+        
     }
 }

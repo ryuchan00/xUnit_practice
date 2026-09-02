@@ -2,7 +2,7 @@ using Moq;
 using TrainingApp.External;
 using TrainingApp.Services;
 
-namespace TrainingApp.Tests.Level5_TestDoubles;
+namespace TrainingApp.Tests.Level4_TestDoubles;
 
 // ===================================================================
 // テストダブル 1: ダミー (Dummy)
@@ -14,10 +14,15 @@ namespace TrainingApp.Tests.Level5_TestDoubles;
 // OrderService.PlaceOrder() は IReceiptPrinter を使いません
 // (PrintReceipt() でのみ使われます)。そのため PlaceOrder のテストでは
 // IReceiptPrinter は「ダミー」として渡すだけで十分です。
+//
+// このファイルは全体が「見本」です。Level4 の他の4ファイルを書くときの
+// 土台になるので、まずここを読んで、何が起きているかを説明できる状態に
+// してから先に進んでください。
+//
 // 実行方法(このLevelだけ実行する場合、リポジトリルートで実行):
-//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+//   dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_TestDoubles"
 // Docker で実行する場合:
-//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level5_TestDoubles"
+//   docker compose run --rm test dotnet test --filter "FullyQualifiedName~TrainingApp.Tests.Level4_TestDoubles"
 // ===================================================================
 public class DummyExampleTests
 {
@@ -43,8 +48,7 @@ public class DummyExampleTests
         var actual = orderService.PlaceOrder(orderId: 1, amount: 1000m, cardToken: "tok_test");
 
         // Assert
-        // 穴埋め: actual.IsSuccess が true であることを検証してください
-        // (dummyReceiptPrinter.Print が呼ばれたかどうかは、このテストの関心事ではありません)
-        Assert.Fail("TODO: actual.IsSuccess を検証してください");
+        // dummyReceiptPrinter.Print が呼ばれたかどうかは、このテストの関心事ではありません。
+        Assert.True(actual.IsSuccess);
     }
 }

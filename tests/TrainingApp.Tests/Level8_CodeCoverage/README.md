@@ -1,7 +1,7 @@
 # Level 8: コードカバレッジのはかり方とベストプラクティス
 
 Level1〜7 で「テストを書くこと」、付録のミューテーションテストで「テストの質」を扱いました。
-この Level では、その中間にある **コードカバレッジ(どのコードがテストで実行されたか)** の
+この Level では、その中間にある コードカバレッジ(どのコードがテストで実行されたか) の
 計測方法と、その数字との付き合い方を学びます。
 
 穴埋め課題ではありません。実際に計測し、レポートを読み、テストが薄い場所を自分で見つけるのがゴールです。
@@ -17,13 +17,13 @@ Level1〜7 で「テストを書くこと」、付録のミューテーション
 
 ## なぜそうするか
 
-カバレッジツールの一番の使いみちは、**テストが当たっていないコードを機械的に洗い出すこと**です
+カバレッジツールの一番の使いみちは、テストが当たっていないコードを機械的に洗い出すことです
 (Martin Fowler も「未テスト箇所を見つける道具」としての価値を強調しています)。
 
-一方で、カバレッジは「そのコードが**実行された**」ことしか示さず、
-「その振る舞いが**正しく検証された**」ことは保証しません。
+一方で、カバレッジは「そのコードが実行された」ことしか示さず、
+「その振る舞いが正しく検証された」ことは保証しません。
 `Assert` が一切なくても、メソッドを呼びさえすればカバレッジは上がります。
-だからカバレッジは **必要条件であって十分条件ではない**、という前提で扱います。
+だからカバレッジは 必要条件であって十分条件ではない、という前提で扱います。
 
 ---
 
@@ -62,8 +62,8 @@ reportgenerator \
 
 生成コードや自明なコードまで数えるとノイズになります。次のような単位で除外できます。
 
-- **属性で除外**: クラスやメソッドに `[ExcludeFromCodeCoverage]`(`System.Diagnostics.CodeAnalysis`)を付ける
-- **設定ファイルで除外**: `.runsettings` や `coverlet.runsettings` で
+- 属性で除外: クラスやメソッドに `[ExcludeFromCodeCoverage]`(`System.Diagnostics.CodeAnalysis`)を付ける
+- 設定ファイルで除外: `.runsettings` や `coverlet.runsettings` で
   `ExcludeByFile` / `ExcludeByAttribute` / `Exclude`(アセンブリ・名前空間単位)を指定する
 
 ```xml
@@ -75,7 +75,7 @@ reportgenerator \
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
           <ExcludeByAttribute>GeneratedCodeAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
-          <ExcludeByFile>**/Migrations/**/*.cs</ExcludeByFile>
+          <ExcludeByFile>/Migrations//*.cs</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>
@@ -100,13 +100,13 @@ dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura \
 
 | 指標 | 何を数えるか | 補足 |
 |---|---|---|
-| **line coverage** | 実行された行の割合 | 一番ゆるい。1 行に複数分岐があると見逃す |
-| **branch coverage** | 各条件の true/false 両方を通ったか | line より厳しく、示唆に富む。まずここを見る |
-| **method coverage** | 1 度でも呼ばれたメソッドの割合 | 未使用コードの発見向け |
+| line coverage | 実行された行の割合 | 一番ゆるい。1 行に複数分岐があると見逃す |
+| branch coverage | 各条件の true/false 両方を通ったか | line より厳しく、示唆に富む。まずここを見る |
+| method coverage | 1 度でも呼ばれたメソッドの割合 | 未使用コードの発見向け |
 | condition / MC/DC | 条件式の各項の組み合わせ | 高信頼性システムが必要とする厳格な指標。通常のアプリでは過剰なことが多い |
 
 `if (a && b)` のような行は、line coverage では 100% でも branch coverage では 50% になり得ます。
-**line だけ見て安心しない**のが第一歩です。
+line だけ見て安心しないのが第一歩です。
 
 ---
 
@@ -121,9 +121,9 @@ dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura \
 
 ### 2. 妥当なレンジの目安
 
-- **80〜90%台**が現実的な上限。ここを超えると費用対効果が急落する
-- **100% は疑わしい**。到達させるためだけの不自然なテストが混ざっているサイン
-- **50% を下回る**なら要警戒。テスト文化そのものを見直す
+- 80〜90%台が現実的な上限。ここを超えると費用対効果が急落する
+- 100% は疑わしい。到達させるためだけの不自然なテストが混ざっているサイン
+- 50% を下回るなら要警戒。テスト文化そのものを見直す
 
 数値そのものより、「本番のバグが減ったか」「リファクタが怖くなくなったか」で効果を測ります。
 
@@ -136,18 +136,18 @@ dotnet test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura \
 
 CI で強制するなら、リポジトリ全体の絶対%ではなく次を条件にする方が痛みが少なく効果的です。
 
-- **新規・変更行のカバレッジ(patch / diff coverage)** が一定以上
-- 既存カバレッジを**下げない**(リグレッション防止)
+- 新規・変更行のカバレッジ(patch / diff coverage) が一定以上
+- 既存カバレッジを下げない(リグレッション防止)
 
 ### 5. カバーする優先順位をつける
 
-全体を均一に上げようとしない。**変更が多い / 金銭・安全のリスクがある / システムをつなぐ結合点**の
+全体を均一に上げようとしない。変更が多い / 金銭・安全のリスクがある / システムをつなぐ結合点の
 コードから優先的にカバーする。「どの 80% か」が重要で、「とにかく 80%」ではない。
 
 ### 6. カバレッジ 100% でもアサーションが弱ければ無意味
 
 カバレッジは「実行されたか」だけ。「正しく検証したか」は測れない。
-そこを補うのが付録の**ミューテーションテスト**です。
+そこを補うのが付録のミューテーションテストです。
 カバレッジ(広さ)とミューテーションスコア(深さ)はセットで見る。
 
 ### 7. ノイズを除外して信号を上げる
@@ -160,7 +160,7 @@ DTO・自動生成コード・`Program.cs` のブートストラップ・EF マ�
 ## 課題
 
 1. `dotnet test --collect:"XPlat Code Coverage"` を実行し、HTML レポートを生成する
-2. `src/TrainingApp/Services/` の各クラスの **branch coverage** を確認する
+2. `src/TrainingApp/Services/` の各クラスの branch coverage を確認する
 3. line は高いのに branch が低いクラスを 1 つ選び、通っていない分岐を読み解く
 4. その分岐を通すテストを 1〜2 本追加し、再計測して branch coverage が上がることを確認する
 5. 余力があれば、そのクラスに `dotnet stryker`(付録)をかけ、
